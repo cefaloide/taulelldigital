@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const BASE_API_URL =
-  "https://analisi.transparenciacatalunya.cat/resource/xmyy-7xqi.json";
+  "https://analisi.transparenciacatalunya.cat/resource/8dtv-rvgy.json";
 
-export const productorsProximService = {
+export const llicenciesComercialsService = {
   getAll,
 };
 
