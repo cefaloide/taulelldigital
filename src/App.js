@@ -40,6 +40,24 @@ const mapStyles = {
   height: "100%",
 };
 
+const divInfo = {
+  position: "absolute",
+  background: "white",
+  zIndex: "999",
+  top: "4rem",
+  left: "1rem",
+  padding: "10px",
+  borderRadius: "5px",
+};
+const videcallIcon = {
+  fontSize: "2rem",
+};
+
+const noStyle = {
+  textDecoration: "none",
+  color: "black",
+};
+
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +74,7 @@ export class MapContainer extends Component {
       llicenciesComercials: [],
       productorsProxim: [],
       isLoading: true,
+      info: "",
     };
   }
 
@@ -109,7 +128,7 @@ export class MapContainer extends Component {
             lat: element.lat,
             lng: element.lng,
           }}
-          onClick={() => console.log("You clicked me!")}
+          onClick={() => this.showMarkerInfo(element)}
         />
       );
     });
@@ -155,26 +174,91 @@ export class MapContainer extends Component {
     this.setState({ productorsProxim: res, isLoading: false });
   };
 
+  showMarkerInfo = (info) => {
+    this.setState({ info });
+  };
+
   render() {
     if (this.state.isLoading) {
       return <div>LOADING...</div>;
     } else {
       return (
-        <div>
-          <Map
-            google={this.props.google}
-            zoom={10}
-            style={mapStyles}
-            initialCenter={{
-              lat: 47.49855629475769,
-              lng: -122.14184416996333,
-            }}
-          >
-            {/* {this.displayMarkers()} */}
-            {/* {this.displayllicencies()} */}
-            {this.displayProductors()}
-          </Map>
-        </div>
+        <>
+          {this.state.info != "" && (
+            <div style={divInfo}>
+              <p>
+                <strong>Denominació: </strong>
+                {this.state.info.denominaci}
+              </p>
+              <p>
+                <strong>Num acreditació: </strong>
+                {this.state.info.num_acreditacio}
+              </p>
+              <p>
+                <strong>Nom empresa: </strong>
+                {this.state.info.nomempresa}
+              </p>
+              <p>
+                <strong>Adreca: </strong>
+                {this.state.info.adreca}
+              </p>
+              <p>
+                <strong>Codipostal: </strong>
+                {this.state.info.codipostal}
+              </p>
+              <p>
+                <strong>Municipi: </strong>
+                {this.state.info.municipi}
+              </p>
+              <p>
+                <strong>Comarca: </strong>
+                {this.state.info.comarca}
+              </p>
+              <p>
+                <strong>Productes: </strong>
+                {this.state.info.productes}
+              </p>
+              <p>
+                <strong>Venda circuit curt: </strong>
+                {this.state.info.venda_circuit_curt}
+              </p>
+              <p>
+                <strong>Teléfon: </strong>
+                {this.state.info.tel_fon}
+              </p>
+              <p>
+                <strong>Correu: </strong>
+                {this.state.info.correu}
+              </p>
+              <p>
+                <strong>Taulell virtual: </strong>
+                <a
+                  style={noStyle}
+                  href={
+                    "https://meet.jit.si/" + this.state.info.num_acreditacio
+                  }
+                >
+                  Videotrucada <span style={videcallIcon}>🎦</span>
+                </a>
+              </p>
+            </div>
+          )}
+          <div>
+            <Map
+              google={this.props.google}
+              zoom={10}
+              style={mapStyles}
+              initialCenter={{
+                lat: 41.3851,
+                lng: 2.1734,
+              }}
+            >
+              {/* {this.displayMarkers()} */}
+              {/* {this.displayllicencies()} */}
+              {this.displayProductors()}
+            </Map>
+          </div>
+        </>
       );
     }
   }
