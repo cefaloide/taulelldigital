@@ -56,6 +56,10 @@ export class MapContainer extends Component {
     };
   }
 
+  componentDidMount() {
+    this.loadAllLlicenciesComercials();
+  }
+
   displayMarkers = () => {
     return this.state.stores.map((store, index) => {
       return (
@@ -65,6 +69,21 @@ export class MapContainer extends Component {
           position={{
             lat: store.latitude,
             lng: store.longitude,
+          }}
+          onClick={() => console.log("You clicked me!")}
+        />
+      );
+    });
+  };
+  displayllicencies = () => {
+    return this.state.llicenciesComercials.map((element, index) => {
+      return (
+        <Marker
+          key={index}
+          id={index}
+          position={{
+            lat: element.utm_x,
+            lng: element.utm_y,
           }}
           onClick={() => console.log("You clicked me!")}
         />
@@ -90,41 +109,32 @@ export class MapContainer extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <button onClick={() => this.loadAllLlicenciesComercials()}>
-          Llicencies Comercials
-        </button>
-        <button onClick={() => this.loadAllProductorsProxim()}>
-          Productors Proximitat
-        </button>
-        <Map
-          google={this.props.google}
-          zoom={10}
-          style={mapStyles}
-          initialCenter={{
-            lat: 47.49855629475769,
-            lng: -122.14184416996333,
-          }}
-        >
-          {this.displayMarkers()}
-
-          {/* {this.state.stores.map((store, index) => {
-            return (
-              <Marker
-                key={index}
-                id={index}
-                position={{
-                  lat: store.utm_x,
-                  lng: store.utm_y,
-                }}
-                onClick={() => console.log("You clicked me!")}
-              />
-            );
-          })} */}
-        </Map>
-      </div>
-    );
+    if (this.state.llicenciesComercials.length === 0) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <div>
+          <button onClick={() => this.loadAllLlicenciesComercials()}>
+            Llicencies Comercials
+          </button>
+          <button onClick={() => this.loadAllProductorsProxim()}>
+            Productors Proximitat
+          </button>
+          <Map
+            google={this.props.google}
+            zoom={10}
+            style={mapStyles}
+            initialCenter={{
+              lat: 47.49855629475769,
+              lng: -122.14184416996333,
+            }}
+          >
+            {/* {this.displayMarkers()} */}
+            {this.displayllicencies()}
+          </Map>
+        </div>
+      );
+    }
   }
 }
 
