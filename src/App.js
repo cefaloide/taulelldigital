@@ -53,11 +53,13 @@ export class MapContainer extends Component {
       ],
       llicenciesComercials: [],
       productorsProxim: [],
+      isLoading: true,
     };
   }
 
   componentDidMount() {
-    this.loadAllLlicenciesComercials();
+    // this.loadAllLlicenciesComercials();
+    this.loadAllProductorsProxim();
   }
 
   displayMarkers = () => {
@@ -75,6 +77,7 @@ export class MapContainer extends Component {
       );
     });
   };
+
   displayllicencies = () => {
     return this.state.llicenciesComercials.map((element, index) => {
       return (
@@ -84,6 +87,22 @@ export class MapContainer extends Component {
           position={{
             lat: element.utm_x,
             lng: element.utm_y,
+          }}
+          onClick={() => console.log("You clicked me!")}
+        />
+      );
+    });
+  };
+
+  displayProductors = () => {
+    return this.state.productorsProxim.map((element, index) => {
+      return (
+        <Marker
+          key={index}
+          id={index}
+          position={{
+            lat: element.lat,
+            lng: element.long,
           }}
           onClick={() => console.log("You clicked me!")}
         />
@@ -102,24 +121,21 @@ export class MapContainer extends Component {
   loadAllProductorsProxim = async () => {
     console.log("loadAllProductors");
     const res = await productorsProximService.getAll();
-    // setProductorsProxim(res);
+    // TODO añadir valores de lat y long
+    res.map((element, index) => {
+      return element;
+    });
     this.setState({ productorsProxim: res });
     console.log("res loadAllProductors");
     console.log(res);
   };
 
   render() {
-    if (this.state.llicenciesComercials.length === 0) {
-      return <div>Loading...</div>;
+    if (this.state.isLoading) {
+      return <div>LOADING...</div>;
     } else {
       return (
         <div>
-          <button onClick={() => this.loadAllLlicenciesComercials()}>
-            Llicencies Comercials
-          </button>
-          <button onClick={() => this.loadAllProductorsProxim()}>
-            Productors Proximitat
-          </button>
           <Map
             google={this.props.google}
             zoom={10}
@@ -130,7 +146,8 @@ export class MapContainer extends Component {
             }}
           >
             {/* {this.displayMarkers()} */}
-            {this.displayllicencies()}
+            {/* {this.displayllicencies()} */}
+            {this.displayProductors()}
           </Map>
         </div>
       );
