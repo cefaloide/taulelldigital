@@ -33,6 +33,8 @@ import { productorsProximService } from "./services/ProductorsProximService";
 import { llicenciesComercialsService } from "./services/LlicenciesComercialsService";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 
+import Geocode from "react-geocode";
+
 const mapStyles = {
   width: "100%",
   height: "100%",
@@ -59,6 +61,21 @@ export class MapContainer extends Component {
 
   componentDidMount() {
     // this.loadAllLlicenciesComercials();
+
+    // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLEMAPS_GEOCODE_API_KEY);
+    // Get latidude & longitude from address.
+    Geocode.fromAddress("Eiffel Tower").then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log("lat, lng");
+        console.log(lat, lng);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
     this.loadAllProductorsProxim();
   }
 
