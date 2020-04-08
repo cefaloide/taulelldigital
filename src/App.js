@@ -64,18 +64,6 @@ export class MapContainer extends Component {
 
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey(process.env.REACT_APP_GOOGLEMAPS_GEOCODE_API_KEY);
-    // Get latidude & longitude from address.
-    Geocode.fromAddress("Eiffel Tower").then(
-      (response) => {
-        const { lat, lng } = response.results[0].geometry.location;
-        console.log("lat, lng");
-        console.log(lat, lng);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-
     this.loadAllProductorsProxim();
   }
 
@@ -119,7 +107,7 @@ export class MapContainer extends Component {
           id={index}
           position={{
             lat: element.lat,
-            lng: element.long,
+            lng: element.lng,
           }}
           onClick={() => console.log("You clicked me!")}
         />
@@ -138,13 +126,33 @@ export class MapContainer extends Component {
   loadAllProductorsProxim = async () => {
     console.log("loadAllProductors");
     const res = await productorsProximService.getAll();
-    // TODO añadir valores de lat y long
-    res.map((element, index) => {
-      return element;
-    });
-    this.setState({ productorsProxim: res });
+    // añadir valores de lat y long
+    // let productors = [];
+    // for (let index = 0; index < res.length; index++) {
+    //   const element = res[index];
+    // Get latidude & longitude from address.
+    //   Geocode.fromAddress(
+    //     element.adreca + element.municipi + element.codipostal
+    //   ).then(
+    //     (response) => {
+    //       const { lat, lng } = response.results[0].geometry.location;
+    //       console.log("lat, lng");
+    //       console.log(lat, lng);
+
+    //       const newEl = { ...element, lat, lng };
+    //       productors.push(newEl);
+    //       console.log("productors");
+    //       console.log(productors);
+    //       this.setState({ productorsProxim: productors });
+    //     },
+    //     (error) => {
+    //       console.error(error);
+    //     }
+    //   );
+    // }
     console.log("res loadAllProductors");
     console.log(res);
+    this.setState({ productorsProxim: res, isLoading: false });
   };
 
   render() {

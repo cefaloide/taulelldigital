@@ -10,7 +10,12 @@ export const productorsProximService = {
 async function getAll() {
   const data = await axios
     .get(`${BASE_API_URL}`)
-    .then((response) => response.data)
+    .then((response) => {
+      // return response.data;
+      //Retur JSON with lat lng for testing purposes
+      const data = require("./productorsProximLatLng.json");
+      return data;
+    })
     .catch((error) => {
       const errorMsg = "Error getting data";
       console.log(errorMsg);
