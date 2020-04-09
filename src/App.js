@@ -104,7 +104,7 @@ export class MapContainer extends Component {
             lng: element.lng,
           }}
           onClick={() => this.showMarkerInfo(element)}
-          icon={"./img/store.png"}
+          icon={"./img/logo50x50.png"}
         />
       );
     });
@@ -216,7 +216,8 @@ export class MapContainer extends Component {
                 <a
                   style={noStyle}
                   href={
-                    "https://meet.jit.si/" + this.state.info.num_acreditacio
+                    "./TD/t.html?roomName=" +
+                    this.getRoomName(this.state.info.num_acreditacio)
                   }
                 >
                   Videotrucada{" "}
