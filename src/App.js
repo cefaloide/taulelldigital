@@ -1,38 +1,8 @@
-// import React, { useState, useEffect } from "react";
-// import "./App.css";
-// import { productorsProximService } from "./services/ProductorsProximService";
-// import { Map, GoogleApiWrapper } from "google-maps-react";
-
-// function App() {
-//   const [productorsProxim, setProductorsProxim] = useState();
-
-//   useEffect(() => {
-//     // loadAllProductorsProxim();
-//   }, []);
-
-//   const loadAllProductorsProxim = async () => {
-//     console.log("loadAllProductors");
-//     const res = await productorsProximService.getAll();
-//     setProductorsProxim(res);
-//   };
-
-//   return (
-//     <Map
-//       google={this.props.google}
-//       zoom={8}
-//       initialCenter={{ lat: 47.444, lng: -122.176 }}
-//     />
-//   );
-// }
-
-// export default App;
-
 import React, { Component } from "react";
 // import { productorsProximService } from "./services/ProductorsProximService";
 import { productorsProximService } from "./services/ProductorsProximService";
 import { llicenciesComercialsService } from "./services/LlicenciesComercialsService";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
-
 import Geocode from "react-geocode";
 
 const mapStyles = {
@@ -184,44 +154,36 @@ export class MapContainer extends Component {
     } else {
       return (
         <>
-          {this.state.info != "" && (
+          {this.state.info !== "" && (
             <div style={divInfo}>
               <p>
                 <strong>Denominació: </strong>
                 {this.state.info.denominaci}
               </p>
-              <p>
+              {/* <p>
                 <strong>Num acreditació: </strong>
                 {this.state.info.num_acreditacio}
-              </p>
+              </p> */}
               <p>
                 <strong>Nom empresa: </strong>
                 {this.state.info.nomempresa}
               </p>
               <p>
-                <strong>Adreca: </strong>
-                {this.state.info.adreca}
+                <strong> Adreça: </strong>
+                {this.state.info.adreca},&nbsp;{this.state.info.municipi}
               </p>
-              <p>
-                <strong>Codipostal: </strong>
-                {this.state.info.codipostal}
-              </p>
-              <p>
-                <strong>Municipi: </strong>
-                {this.state.info.municipi}
-              </p>
-              <p>
+              {/* <p>
                 <strong>Comarca: </strong>
                 {this.state.info.comarca}
-              </p>
+              </p> */}
               <p>
                 <strong>Productes: </strong>
                 {this.state.info.productes}
               </p>
-              <p>
+              {/* <p>
                 <strong>Venda circuit curt: </strong>
                 {this.state.info.venda_circuit_curt}
-              </p>
+              </p> */}
               <p>
                 <strong>Teléfon: </strong>
                 {this.state.info.tel_fon}
@@ -238,9 +200,18 @@ export class MapContainer extends Component {
                     "https://meet.jit.si/" + this.state.info.num_acreditacio
                   }
                 >
-                  Videotrucada <span style={videcallIcon}>🎦</span>
+                  Videotrucada{" "}
+                  <span style={videcallIcon} role="img" aria-label="camera">
+                    🎦
+                  </span>
                 </a>
               </p>
+              <iframe
+                src={"https://meet.jit.si/" + this.state.info.num_acreditacio}
+                height="500"
+                width="500"
+                allow="camera;microphone"
+              ></iframe>
             </div>
           )}
           <div>
