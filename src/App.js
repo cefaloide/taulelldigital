@@ -206,8 +206,14 @@ export class MapContainer extends Component {
                   </span>
                 </a>
               </p>
-              <iframe
+              {/* <iframe
                 src={"https://meet.jit.si/" + this.state.info.num_acreditacio}
+                height="500"
+                width="500"
+                allow="camera;microphone"
+              ></iframe> */}
+              <iframe
+                src={"/TD/t.html"}
                 height="500"
                 width="500"
                 allow="camera;microphone"
