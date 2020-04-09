@@ -157,6 +157,11 @@ export class MapContainer extends Component {
     this.setState({ info: "" });
   };
 
+  getRoomName = (info) => {
+    const roomName = info.replace(/\//g, "_");
+    return roomName;
+  };
+
   render() {
     if (this.state.isLoading) {
       return <div>LOADING...</div>;
@@ -231,7 +236,10 @@ export class MapContainer extends Component {
                 allow="camera;microphone"
               ></iframe> */}
               <iframe
-                src={"./TD/t.html"}
+                src={
+                  "./TD/t.html?roomName=" +
+                  this.getRoomName(this.state.info.num_acreditacio)
+                }
                 height="500"
                 width="500"
                 allow="camera;microphone"
