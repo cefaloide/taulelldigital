@@ -99,6 +99,7 @@ export class MapContainer extends Component {
             lng: element.lng,
           }}
           onClick={() => this.showMarkerInfo(element)}
+          icon={"./img/store.png"}
         />
       );
     });
@@ -213,7 +214,7 @@ export class MapContainer extends Component {
                 allow="camera;microphone"
               ></iframe> */}
               <iframe
-                src={"/TD/t.html"}
+                src={"./TD/t.html"}
                 height="500"
                 width="500"
                 allow="camera;microphone"
