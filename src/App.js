@@ -5,12 +5,12 @@ import { llicenciesComercialsService } from "./services/LlicenciesComercialsServ
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import Geocode from "react-geocode";
 
-const mapStyles = {
+const mapStyle = {
   width: "100%",
   height: "100%",
 };
 
-const divInfo = {
+const divInfoStyle = {
   position: "absolute",
   background: "white",
   zIndex: "999",
@@ -19,13 +19,18 @@ const divInfo = {
   padding: "10px",
   borderRadius: "5px",
 };
-const videcallIcon = {
+const videcallIconStyle = {
   fontSize: "2rem",
 };
 
 const noStyle = {
   textDecoration: "none",
   color: "black",
+};
+const closeIconStyle = {
+  cursor: "pointer",
+  float: "right",
+  width: "32px",
 };
 
 export class MapContainer extends Component {
@@ -148,6 +153,9 @@ export class MapContainer extends Component {
   showMarkerInfo = (info) => {
     this.setState({ info });
   };
+  hideMarkerInfo = () => {
+    this.setState({ info: "" });
+  };
 
   render() {
     if (this.state.isLoading) {
@@ -156,7 +164,12 @@ export class MapContainer extends Component {
       return (
         <>
           {this.state.info !== "" && (
-            <div style={divInfo}>
+            <div style={divInfoStyle}>
+              <img
+                src="./img/close.png"
+                onClick={() => this.hideMarkerInfo()}
+                style={closeIconStyle}
+              />
               <p>
                 <strong>Denominació: </strong>
                 {this.state.info.denominaci}
@@ -202,7 +215,11 @@ export class MapContainer extends Component {
                   }
                 >
                   Videotrucada{" "}
-                  <span style={videcallIcon} role="img" aria-label="camera">
+                  <span
+                    style={videcallIconStyle}
+                    role="img"
+                    aria-label="camera"
+                  >
                     🎦
                   </span>
                 </a>
@@ -224,8 +241,8 @@ export class MapContainer extends Component {
           <div>
             <Map
               google={this.props.google}
-              zoom={10}
-              style={mapStyles}
+              zoom={15}
+              style={mapStyle}
               initialCenter={{
                 lat: 41.3851,
                 lng: 2.1734,
