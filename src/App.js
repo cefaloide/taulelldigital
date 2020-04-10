@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-// import { productorsProximService } from "./services/ProductorsProximService";
 import { productorsProximService } from "./services/ProductorsProximService";
 import { llicenciesComercialsService } from "./services/LlicenciesComercialsService";
-import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode";
+import InfoWindowEx from "./components/InfoWindowEx";
 
 const mapStyle = {
   width: "100%",
@@ -18,9 +18,7 @@ const divInfoStyle = {
   left: "1rem",
   padding: "10px",
   borderRadius: "5px",
-};
-const videcallIconStyle = {
-  fontSize: "2rem",
+  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
 };
 
 const noStyle = {
@@ -31,6 +29,9 @@ const closeIconStyle = {
   cursor: "pointer",
   float: "right",
   width: "32px",
+};
+const imgStyle = {
+  verticalAlign: "middle",
 };
 
 export class MapContainer extends Component {
@@ -50,6 +51,9 @@ export class MapContainer extends Component {
       productorsProxim: [],
       isLoading: true,
       info: "",
+      showingInfoWindow: false,
+      activeMarker: {},
+      selectedPlace: {},
     };
   }
 
@@ -97,14 +101,18 @@ export class MapContainer extends Component {
     return this.state.productorsProxim.map((element, index) => {
       return (
         <Marker
+          title={element.denominaci}
           key={index}
           id={index}
           position={{
             lat: element.lat,
             lng: element.lng,
           }}
-          onClick={() => this.showMarkerInfo(element)}
+          // onClick={() => this.showMarkerInfo(element)}
           icon={"./img/logo50x50.png"}
+          onClick={this.onMarkerClick}
+          name={"Current location"}
+          info={element}
         />
       );
     });
@@ -160,6 +168,25 @@ export class MapContainer extends Component {
   getRoomName = (info) => {
     const roomName = info.replace(/\//g, "_");
     return roomName;
+  };
+
+  onMarkerClick = (props, marker, e) => {
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true,
+      info: "",
+    });
+  };
+
+  onMapClicked = (props) => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null,
+        info: "",
+      });
+    }
   };
 
   render() {
@@ -219,15 +246,9 @@ export class MapContainer extends Component {
                     "./TD/t.html?roomName=" +
                     this.getRoomName(this.state.info.num_acreditacio)
                   }
+                  target="_blank"
                 >
-                  Videotrucada{" "}
-                  <span
-                    style={videcallIconStyle}
-                    role="img"
-                    aria-label="camera"
-                  >
-                    🎦
-                  </span>
+                  Videotrucada <img src="./img/phonebtn.png" />
                 </a>
               </p>
               {/* <iframe
@@ -236,7 +257,7 @@ export class MapContainer extends Component {
                 width="500"
                 allow="camera;microphone"
               ></iframe> */}
-              <iframe
+              {/* <iframe
                 src={
                   "./TD/t.html?roomName=" +
                   this.getRoomName(this.state.info.num_acreditacio)
@@ -244,7 +265,7 @@ export class MapContainer extends Component {
                 height="500"
                 width="500"
                 allow="camera;microphone"
-              ></iframe>
+              ></iframe> */}
             </div>
           )}
           <div>
@@ -256,10 +277,30 @@ export class MapContainer extends Component {
                 lat: 41.3851,
                 lng: 2.1734,
               }}
+              onClick={this.onMapClicked}
             >
               {/* {this.displayMarkers()} */}
               {/* {this.displayllicencies()} */}
               {this.displayProductors()}
+              <InfoWindowEx
+                marker={this.state.activeMarker}
+                visible={this.state.showingInfoWindow}
+              >
+                <div>
+                  <h3>
+                    {this.state.selectedPlace.title}{" "}
+                    <img style={imgStyle} src="./img/openboard.png" />
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      this.showMarkerInfo(this.state.selectedPlace.info)
+                    }
+                  >
+                    Veure detalls
+                  </button>
+                </div>
+              </InfoWindowEx>
             </Map>
           </div>
         </>
