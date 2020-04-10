@@ -25,6 +25,9 @@ const noStyle = {
   textDecoration: "none",
   color: "black",
 };
+const centerStyle = {
+  textAlign: "center",
+};
 const closeIconStyle = {
   cursor: "pointer",
   float: "right",
@@ -291,6 +294,22 @@ export class MapContainer extends Component {
                     {this.state.selectedPlace.title}{" "}
                     <img style={imgStyle} src="./img/openboard.png" />
                   </h3>
+                  <p style={centerStyle}>
+                    {this.state.selectedPlace.info && (
+                      <a
+                        style={noStyle}
+                        href={
+                          "./TD/t.html?roomName=" +
+                          this.getRoomName(
+                            this.state.selectedPlace.info.num_acreditacio
+                          )
+                        }
+                        target="_blank"
+                      >
+                        <img src="./img/phonebtn.png" />
+                      </a>
+                    )}
+                  </p>
                   <button
                     type="button"
                     onClick={() =>
