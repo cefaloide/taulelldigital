@@ -251,7 +251,13 @@ export class MapContainer extends Component {
                   }
                   target="_blank"
                 >
-                  Videotrucada <img src="./img/phonebtn.png" />
+                  Videotrucada <img style={imgStyle} src="./img/phonebtn.png" />
+                </a>
+              </p>
+
+              <p>
+                <a href=" mailto:info@taulelldigital.com?subject=He%20trobat%20dades%20incorrectes">
+                  Informació incorrecte?
                 </a>
               </p>
               {/* <iframe
