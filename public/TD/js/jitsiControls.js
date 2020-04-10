@@ -1,4 +1,5 @@
 var TotalUsuarisConnectats = 0;
+var users = [];
 // Hi ha una funció que retorna el número d'usuaris connectats però
 // això ho vaig implementar abans de veure la funció
 
@@ -6,22 +7,36 @@ var TotalUsuarisConnectats = 0;
 //    Fons de la web de color verd
 //    Incrementar el número de clients al TD (Taulell Digital)
 
-api.addEventListener("participantJoined", () => {
-  console.log("Local User Joined");
+api.addEventListener("participantJoined", (obj) => {
+  console.log("participantJoined:");
+  console.log(obj);
   //api.executeCommand('displayName', 'MyName');
   document.body.style.backgroundColor = "green";
   TotalUsuarisConnectats++;
   document.getElementById(
     "UsuarisConnectats"
   ).innerHTML = TotalUsuarisConnectats;
+
+  api.executeCommand("displayName", userName);
+  obj.displayName = userName;
+
+  users.push(obj);
+  var txt = "";
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    var userNum = i + 1;
+    txt += "<p> <strong>" + userNum + "-</strong> " + user.displayName + "</p>";
+  }
+  document.getElementById("users").innerHTML = txt;
 });
 
 // Quan un client es desconnecta:
 //    Decrementar el número de clients al TD (Taulell Digital)
 //    Si el número de clients és zero fons de color blanc
 
-api.addEventListener("participantLeft", () => {
-  console.log("Local User Joined");
+api.addEventListener("participantLeft", (obj) => {
+  console.log("participantLeft:");
+  console.log(obj);
   //api.executeCommand('displayName', 'MyName');
   TotalUsuarisConnectats--;
   document.getElementById(
@@ -30,6 +45,14 @@ api.addEventListener("participantLeft", () => {
   if (TotalUsuarisConnectats == 0) {
     document.body.style.backgroundColor = "white";
   }
+
+  users = users.filter((el) => el.id !== obj.id);
+  var txt = "";
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    txt += "<p> <strong>" + "-</strong> " + user.displayName + "</p>";
+  }
+  document.getElementById("users").innerHTML = txt;
 });
 
 // Botons - controls
