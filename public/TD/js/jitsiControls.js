@@ -10,24 +10,24 @@ var users = [];
 api.addEventListener("participantJoined", (obj) => {
   console.log("participantJoined:");
   console.log(obj);
-  //api.executeCommand('displayName', 'MyName');
-  document.body.style.backgroundColor = "green";
-  TotalUsuarisConnectats++;
-  document.getElementById(
-    "UsuarisConnectats"
-  ).innerHTML = TotalUsuarisConnectats;
+  // //api.executeCommand('displayName', 'MyName');
+  // document.body.style.backgroundColor = "green";
+  // TotalUsuarisConnectats++;
+  // document.getElementById(
+  //   "UsuarisConnectats"
+  // ).innerHTML = TotalUsuarisConnectats;
 
-  api.executeCommand("displayName", userName);
-  obj.displayName = userName;
+  // api.executeCommand("displayName", userName);
+  // obj.displayName = userName;
 
-  users.push(obj);
-  var txt = "";
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-    var userNum = i + 1;
-    txt += "<p> <strong>" + userNum + "-</strong> " + user.displayName + "</p>";
-  }
-  document.getElementById("users").innerHTML = txt;
+  // users.push(obj);
+  // var txt = "";
+  // for (let i = 0; i < users.length; i++) {
+  //   const user = users[i];
+  //   var userNum = i + 1;
+  //   txt += "<p> <strong>" + userNum + "-</strong> " + user.displayName + "</p>";
+  // }
+  // document.getElementById("users").innerHTML = txt;
 });
 
 // Quan un client es desconnecta:
@@ -35,24 +35,23 @@ api.addEventListener("participantJoined", (obj) => {
 //    Si el número de clients és zero fons de color blanc
 
 api.addEventListener("participantLeft", (obj) => {
-  console.log("participantLeft:");
-  console.log(obj);
-  //api.executeCommand('displayName', 'MyName');
-  TotalUsuarisConnectats--;
-  document.getElementById(
-    "UsuarisConnectats"
-  ).innerHTML = TotalUsuarisConnectats;
-  if (TotalUsuarisConnectats == 0) {
-    document.body.style.backgroundColor = "white";
-  }
-
-  users = users.filter((el) => el.id !== obj.id);
-  var txt = "";
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-    txt += "<p> <strong>" + "-</strong> " + user.displayName + "</p>";
-  }
-  document.getElementById("users").innerHTML = txt;
+  // console.log("participantLeft:");
+  // console.log(obj);
+  // //api.executeCommand('displayName', 'MyName');
+  // TotalUsuarisConnectats--;
+  // document.getElementById(
+  //   "UsuarisConnectats"
+  // ).innerHTML = TotalUsuarisConnectats;
+  // if (TotalUsuarisConnectats == 0) {
+  //   document.body.style.backgroundColor = "white";
+  // }
+  // users = users.filter((el) => el.id !== obj.id);
+  // var txt = "";
+  // for (let i = 0; i < users.length; i++) {
+  //   const user = users[i];
+  //   txt += "<p> <strong>" + "-</strong> " + user.displayName + "</p>";
+  // }
+  // document.getElementById("users").innerHTML = txt;
 });
 
 // Botons - controls
