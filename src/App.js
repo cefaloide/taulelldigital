@@ -10,15 +10,46 @@ const mapStyle = {
   height: "100%",
 };
 
+const containerUserName = {
+  position: "absolute",
+  top: "10px",
+  right: "5rem",
+  background: "white",
+  padding: "5px",
+  zIndex: "998",
+  borderRadius: "5px",
+  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
+  cursor: "pointer",
+};
+
 const divInfoStyle = {
   position: "absolute",
   background: "white",
-  zIndex: "999",
+  zIndex: "998",
   top: "4rem",
   left: "1rem",
   padding: "10px",
   borderRadius: "5px",
   boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
+};
+const containerWelcomeStyle = {
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute",
+  zIndex: "999",
+  width: "100%",
+  height: "100%",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "rgba(0, 0, 0, 0.5)",
+};
+const welcomeStyle = {
+  background: "white",
+  top: "15%",
+  padding: "15px",
+  borderRadius: "5px",
+  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
+  textAlign: "center",
 };
 
 const noStyle = {
@@ -28,6 +59,7 @@ const noStyle = {
 const centerStyle = {
   textAlign: "center",
 };
+
 const closeIconStyle = {
   cursor: "pointer",
   float: "right",
@@ -35,6 +67,10 @@ const closeIconStyle = {
 };
 const imgStyle = {
   verticalAlign: "middle",
+};
+const imgBtnStyle = {
+  verticalAlign: "middle",
+  cursor: "pointer",
 };
 
 export class MapContainer extends Component {
@@ -57,6 +93,8 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+      userName: null,
+      showWelcome: true,
     };
   }
 
@@ -66,6 +104,16 @@ export class MapContainer extends Component {
     // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
     Geocode.setApiKey(process.env.REACT_APP_GOOGLEMAPS_GEOCODE_API_KEY);
     this.loadAllProductorsProxim();
+
+    var userName = localStorage.getItem("userName");
+    console.log("userName");
+    console.log(userName);
+    if (userName) {
+      console.log("SI");
+      this.setState({ userName });
+    } else {
+      console.log("NO");
+    }
   }
 
   displayMarkers = () => {
@@ -192,12 +240,91 @@ export class MapContainer extends Component {
     }
   };
 
+  setUserName = () => {
+    console.log("setUserName");
+    const name = this.state.userInputName;
+
+    localStorage.setItem("userName", name);
+    this.setState({ userName: name });
+  };
+
+  hideWelcome = () => {
+    this.setState({ showWelcome: false });
+  };
+
+  updateInputName = (evt) => {
+    this.setState({ userInputName: evt.target.value });
+  };
+
+  removeUserName = () => {
+    localStorage.removeItem("userName");
+    this.setState({ userName: null });
+  };
+
   render() {
     if (this.state.isLoading) {
       return <div>LOADING...</div>;
     } else {
       return (
         <>
+          {this.state.showWelcome && (
+            <div style={containerWelcomeStyle}>
+              <div style={welcomeStyle}>
+                {!this.state.userName && (
+                  <>
+                    <p>
+                      <img src="./img/girl150x150.png" />
+                    </p>
+                    <p>Es la primera vegada que entres?</p>
+                    <p>BENVINGUT!</p>
+                    <p>Com et dius?</p>
+                    <p>
+                      <input
+                        value={this.state.inputName}
+                        onInput={(evt) => this.updateInputName(evt)}
+                        type="text"
+                      ></input>{" "}
+                      <img
+                        onClick={() => this.setUserName()}
+                        style={imgBtnStyle}
+                        src="./img/forward.png"
+                      />
+                    </p>
+                  </>
+                )}
+                {this.state.userName && (
+                  <>
+                    <p>
+                      <img src="./img/girlSmile150x150.png" />
+                    </p>
+                    <p>
+                      Hola <b>{this.state.userName}</b>
+                    </p>
+                    <p>
+                      Benvolgut/da{" "}
+                      <img
+                        onClick={() => this.hideWelcome()}
+                        style={imgBtnStyle}
+                        src="./img/forward.png"
+                      />
+                    </p>
+                    <p onClick={() => this.removeUserName()}>
+                      <em>El nom no és correcte?</em>
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+          {!this.state.showWelcome && (
+            <div
+              style={containerUserName}
+              onClick={() => this.setState({ showWelcome: true })}
+            >
+              <img style={imgStyle} src="./img/user.png" />{" "}
+              <b>{this.state.userName}</b>
+            </div>
+          )}
           {this.state.info !== "" && (
             <div style={divInfoStyle}>
               <img
@@ -206,48 +333,50 @@ export class MapContainer extends Component {
                 style={closeIconStyle}
               />
               <p>
-                <strong>Denominació: </strong>
+                <b>Denominació: </b>
                 {this.state.info.denominaci}
               </p>
               {/* <p>
-                <strong>Num acreditació: </strong>
+                <b>Num acreditació: </b>
                 {this.state.info.num_acreditacio}
               </p> */}
               <p>
-                <strong>Nom empresa: </strong>
+                <b>Nom empresa: </b>
                 {this.state.info.nomempresa}
               </p>
               <p>
-                <strong> Adreça: </strong>
+                <b> Adreça: </b>
                 {this.state.info.adreca},&nbsp;{this.state.info.municipi}
               </p>
               {/* <p>
-                <strong>Comarca: </strong>
+                <b>Comarca: </b>
                 {this.state.info.comarca}
               </p> */}
               <p>
-                <strong>Productes: </strong>
+                <b>Productes: </b>
                 {this.state.info.productes}
               </p>
               {/* <p>
-                <strong>Venda circuit curt: </strong>
+                <b>Venda circuit curt: </b>
                 {this.state.info.venda_circuit_curt}
               </p> */}
               <p>
-                <strong>Teléfon: </strong>
+                <b>Teléfon: </b>
                 {this.state.info.tel_fon}
               </p>
               <p>
-                <strong>Correu: </strong>
+                <b>Correu: </b>
                 {this.state.info.correu}
               </p>
               <p>
-                <strong>Taulell virtual: </strong>
+                <b>Taulell virtual: </b>
                 <a
                   style={noStyle}
                   href={
                     "./TD/t.html?roomName=" +
-                    this.getRoomName(this.state.info.num_acreditacio)
+                    this.getRoomName(this.state.info.num_acreditacio) +
+                    "&userName=" +
+                    this.state.userName
                   }
                   target="_blank"
                 >
@@ -308,7 +437,9 @@ export class MapContainer extends Component {
                           "./TD/t.html?roomName=" +
                           this.getRoomName(
                             this.state.selectedPlace.info.num_acreditacio
-                          )
+                          ) +
+                          "&userName=" +
+                          this.state.userName
                         }
                         target="_blank"
                       >
