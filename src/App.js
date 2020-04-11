@@ -5,6 +5,19 @@ import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
 
+const cursorPointer = {
+  cursor: "pointer",
+};
+const canviStyle = {
+  color: "black",
+  fontStyle: "italic",
+  textDecoration: "none",
+};
+
+const veureDetallStyle = {
+  textAlign: "right",
+  cursor: "pointer",
+};
 const mapStyle = {
   width: "100%",
   height: "100%",
@@ -23,14 +36,22 @@ const containerUserName = {
 };
 
 const divInfoStyle = {
+  display: "flex",
+  flexWrap: "wrap",
   position: "absolute",
   background: "white",
   zIndex: "998",
-  top: "4rem",
-  left: "1rem",
+  bottom: "0",
+  right: "0",
+  left: "0",
   padding: "10px",
-  borderRadius: "5px",
+  // borderRadius: "5px",
   boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
+  justifyContent: "space-between",
+};
+
+const elInfoStyle = {
+  padding: "5px",
 };
 const containerWelcomeStyle = {
   display: "flex",
@@ -276,7 +297,7 @@ export class MapContainer extends Component {
                       <img src="./img/girl150x150.png" />
                     </p>
                     <p>Es la primera vegada que entres?</p>
-                    <p>BENVINGUT!</p>
+                    <p>BENVINGUT/DA!</p>
                     <p>Com et dius?</p>
                     <p>
                       <input
@@ -308,7 +329,10 @@ export class MapContainer extends Component {
                         src="./img/forward.png"
                       />
                     </p>
-                    <p onClick={() => this.removeUserName()}>
+                    <p
+                      style={cursorPointer}
+                      onClick={() => this.removeUserName()}
+                    >
                       <em>El nom no és correcte?</em>
                     </p>
                   </>
@@ -327,48 +351,54 @@ export class MapContainer extends Component {
           )}
           {this.state.info !== "" && (
             <div style={divInfoStyle}>
-              <img
+              {/* <img
                 src="./img/close.png"
                 onClick={() => this.hideMarkerInfo()}
                 style={closeIconStyle}
-              />
-              <p>
+              /> */}
+              <p style={elInfoStyle}>
                 <b>Denominació: </b>
+                <br></br>
                 {this.state.info.denominaci}
               </p>
               {/* <p>
                 <b>Num acreditació: </b>
                 {this.state.info.num_acreditacio}
               </p> */}
-              <p>
+              <p style={elInfoStyle}>
                 <b>Nom empresa: </b>
+                <br></br>
                 {this.state.info.nomempresa}
               </p>
-              <p>
+              <p style={elInfoStyle}>
                 <b> Adreça: </b>
+                <br></br>
                 {this.state.info.adreca},&nbsp;{this.state.info.municipi}
               </p>
               {/* <p>
                 <b>Comarca: </b>
                 {this.state.info.comarca}
               </p> */}
-              <p>
+              <p style={elInfoStyle}>
                 <b>Productes: </b>
+                <br></br>
                 {this.state.info.productes}
               </p>
               {/* <p>
                 <b>Venda circuit curt: </b>
                 {this.state.info.venda_circuit_curt}
               </p> */}
-              <p>
-                <b>Teléfon: </b>
+              <p style={elInfoStyle}>
+                <b>Telèfon: </b>
+                <br></br>
                 {this.state.info.tel_fon}
               </p>
-              <p>
+              <p style={elInfoStyle}>
                 <b>Correu: </b>
+                <br></br>
                 {this.state.info.correu}
               </p>
-              <p>
+              <p style={elInfoStyle}>
                 <b>Taulell virtual: </b>
                 <a
                   style={noStyle}
@@ -380,13 +410,17 @@ export class MapContainer extends Component {
                   }
                   target="_blank"
                 >
-                  Videotrucada <img style={imgStyle} src="./img/phonebtn.png" />
+                  Videotrucada{" "}
+                  <img style={imgStyle} src="./img/phoneGirlx64.png" />
                 </a>
               </p>
 
-              <p>
-                <a href=" mailto:info@taulelldigital.com?subject=He%20trobat%20dades%20incorrectes">
-                  Informació incorrecte?
+              <p style={elInfoStyle}>
+                <a
+                  style={canviStyle}
+                  href=" mailto:info@taulelldigital.com?subject=He%20trobat%20dades%20incorrectes"
+                >
+                  Suggerir un canvi
                 </a>
               </p>
               {/* <iframe
@@ -427,7 +461,7 @@ export class MapContainer extends Component {
                 <div>
                   <h3>
                     {this.state.selectedPlace.title}{" "}
-                    <img style={imgStyle} src="./img/openboard.png" />
+                    {/* <img style={imgStyle} src="./img/openboard.png" /> */}
                   </h3>
                   <p style={centerStyle}>
                     {this.state.selectedPlace.info && (
@@ -443,18 +477,26 @@ export class MapContainer extends Component {
                         }
                         target="_blank"
                       >
-                        <img src="./img/phonebtn.png" />
+                        <img src="./img/phoneGirlx64.png" />
                       </a>
                     )}
                   </p>
-                  <button
+                  {/* <button
                     type="button"
                     onClick={() =>
                       this.showMarkerInfo(this.state.selectedPlace.info)
                     }
                   >
                     Veure detalls
-                  </button>
+                  </button> */}
+                  <div
+                    style={veureDetallStyle}
+                    onClick={() =>
+                      this.showMarkerInfo(this.state.selectedPlace.info)
+                    }
+                  >
+                    Veure detalls
+                  </div>
                 </div>
               </InfoWindowEx>
             </Map>
