@@ -296,7 +296,7 @@ export class MapContainer extends Component {
                     <p>
                       <img src="./img/girl150x150.png" />
                     </p>
-                    <p>Es la primera vegada que entres?</p>
+                    <p>És la primera vegada que entres?</p>
                     <p>BENVINGUT/DA!</p>
                     <p>Com et dius?</p>
                     <p>
