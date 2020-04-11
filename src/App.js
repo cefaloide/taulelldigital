@@ -5,6 +5,11 @@ import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
 
+const welcomeTitle = {
+  borderBottom: "1px solid darkgrey",
+  paddingBottom: "16px",
+};
+
 const warningStyle = {
   color: "red",
   fontStyle: "italic",
@@ -121,6 +126,7 @@ export class MapContainer extends Component {
       userName: null,
       showWelcome: true,
       warningName: false,
+      welcomePage: 0,
     };
   }
 
@@ -273,12 +279,12 @@ export class MapContainer extends Component {
       this.setState({ warningName: true });
     } else {
       localStorage.setItem("userName", name);
-      this.setState({ userName: name });
+      this.setState({ welcomePage: 1, userName: name });
     }
   };
 
   hideWelcome = () => {
-    this.setState({ showWelcome: false });
+    this.setState({ welcomePage: 0, showWelcome: false });
   };
 
   updateInputName = (evt) => {
@@ -326,7 +332,35 @@ export class MapContainer extends Component {
                     )}
                   </>
                 )}
-                {this.state.userName && (
+
+                {this.state.welcomePage == 1 && (
+                  <div>
+                    <h2 style={welcomeTitle}>Segueix els següents passos:</h2>
+                    <p>
+                      <b>1-</b> Volta pel mapa fins trobar el teu comerç de
+                      proximitat.
+                      <img style={imgStyle} src="./img/logo_x64.png" />
+                    </p>
+                    <p>
+                      <b>2-</b> Clica-hi a sobre per fer una videoconferència o
+                      veure més detalls{" "}
+                      <img style={imgStyle} src="./img/phoneGirlx64.png" />
+                    </p>
+                    <p>
+                      <b>3-</b> Ja hi pots contactar de manera directa!{" "}
+                      <img style={imgStyle} src="./img/girlHeart_x64.png" />
+                    </p>
+                    <p>
+                      <img
+                        onClick={() => this.hideWelcome()}
+                        style={imgBtnStyle}
+                        src="./img/forward.png"
+                      />
+                    </p>
+                  </div>
+                )}
+
+                {this.state.userName && this.state.welcomePage == 0 && (
                   <>
                     <p>
                       <img src="./img/girlSmile150x150.png" />
@@ -423,7 +457,7 @@ export class MapContainer extends Component {
                   }
                   target="_blank"
                 >
-                  Videotrucada{" "}
+                  Videoconferència{" "}
                   <img style={imgStyle} src="./img/phoneGirlx64.png" />
                 </a>
               </p>
