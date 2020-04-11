@@ -418,6 +418,11 @@ export class MapContainer extends Component {
                 {this.state.info.nomempresa}
               </p>
               <p style={elInfoStyle}>
+                <b>Marca comercial: </b>
+                <br></br>
+                {this.state.info.marca_comercial}
+              </p>
+              <p style={elInfoStyle}>
                 <b> Adreça: </b>
                 <br></br>
                 {this.state.info.adreca},&nbsp;{this.state.info.municipi}
