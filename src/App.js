@@ -5,6 +5,10 @@ import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
 
+const warningStyle = {
+  color: "red",
+  fontStyle: "italic",
+};
 const cursorPointer = {
   cursor: "pointer",
 };
@@ -116,6 +120,7 @@ export class MapContainer extends Component {
       selectedPlace: {},
       userName: null,
       showWelcome: true,
+      warningName: false,
     };
   }
 
@@ -264,9 +269,12 @@ export class MapContainer extends Component {
   setUserName = () => {
     console.log("setUserName");
     const name = this.state.userInputName;
-
-    localStorage.setItem("userName", name);
-    this.setState({ userName: name });
+    if (name === "" || name == undefined) {
+      this.setState({ warningName: true });
+    } else {
+      localStorage.setItem("userName", name);
+      this.setState({ userName: name });
+    }
   };
 
   hideWelcome = () => {
@@ -311,6 +319,11 @@ export class MapContainer extends Component {
                         src="./img/forward.png"
                       />
                     </p>
+                    {this.state.warningName && (
+                      <div style={warningStyle}>
+                        Si us plau escriu el teu nom
+                      </div>
+                    )}
                   </>
                 )}
                 {this.state.userName && (
