@@ -74,6 +74,7 @@ const containerWelcomeStyle = {
   background: "rgba(0, 0, 0, 0.5)",
 };
 const welcomeStyle = {
+  margin: "5px",
   background: "white",
   top: "15%",
   padding: "15px",
@@ -385,6 +386,14 @@ export class MapContainer extends Component {
                   </>
                 )}
               </div>
+              <div style={welcomeStyle}>
+                Si ets un productor <br />
+                accedeix a la teva secció
+                <br />
+                <a style={noStyle} href="./productor/index.html">
+                  <img src="./img/order.png" />
+                </a>
+              </div>
             </div>
           )}
           {!this.state.showWelcome && (
@@ -405,7 +414,7 @@ export class MapContainer extends Component {
               /> */}
               <p style={elInfoStyle}>
                 <b>Denominació: </b>
-                <br></br>
+                <br />
                 {this.state.info.denominaci}
               </p>
               {/* <p>
@@ -414,17 +423,17 @@ export class MapContainer extends Component {
               </p> */}
               <p style={elInfoStyle}>
                 <b>Nom empresa: </b>
-                <br></br>
+                <br />
                 {this.state.info.nomempresa}
               </p>
               <p style={elInfoStyle}>
                 <b>Marca comercial: </b>
-                <br></br>
+                <br />
                 {this.state.info.marca_comercial}
               </p>
               <p style={elInfoStyle}>
                 <b> Adreça: </b>
-                <br></br>
+                <br />
                 {this.state.info.adreca},&nbsp;{this.state.info.municipi}
               </p>
               {/* <p>
@@ -433,7 +442,7 @@ export class MapContainer extends Component {
               </p> */}
               <p style={elInfoStyle}>
                 <b>Productes: </b>
-                <br></br>
+                <br />
                 {this.state.info.productes}
               </p>
               {/* <p>
@@ -442,14 +451,14 @@ export class MapContainer extends Component {
               </p> */}
               <p style={elInfoStyle}>
                 <b>Telèfon: </b>
-                <br></br>
+                <br />
                 <a style={noStyle} href={"tel:" + this.state.info.tel_fon}>
                   {this.state.info.tel_fon}
                 </a>
               </p>
               <p style={elInfoStyle}>
                 <b>Correu: </b>
-                <br></br>
+                <br />
                 <a style={noStyle} href={" mailto:" + this.state.info.correu}>
                   {this.state.info.correu}
                 </a>
