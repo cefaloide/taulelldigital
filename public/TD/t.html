@@ -13,6 +13,17 @@
 
     <script src="https://meet.jit.si/external_api.js"></script>
     <script>
+      if (
+        location.hostname === "localhost" ||
+        location.hostname === "127.0.0.1"
+      ) {
+      } else {
+        //Make shure use of https:
+        if (window.location.protocol != "https:") {
+          location.href = location.href.replace("http://", "https://");
+        }
+      }
+
       var url_string = window.location.href;
       var url = new URL(url_string);
       var myRoomName = url.searchParams.get("roomName");
