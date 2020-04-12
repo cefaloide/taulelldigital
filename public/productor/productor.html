@@ -1,0 +1,91 @@
+<html
+  itemscope
+  itemtype="http://schema.org/Product"
+  prefix="og: http://ogp.me/ns#"
+  xmlns="http://www.w3.org/1999/html"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <title>Taulell Digital</title>
+  </head>
+  <body>
+    <h1>Benvingut Productor al teu Taulell Digital</h1>
+    <table>
+      <tr>
+        <td><img src="img/td.png" width="20%" /></td>
+        <td><img src="img/cs.png" width="15%" /></td>
+        <td><img src="img/laptop.png" width="15%" /></td>
+        <td><img src="img/ui.png" width="15%" /></td>
+        <td><img src="img/of.png" width="15%" /></td>
+        <td><img src="img/xs.png" width="15%" /></td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="showAlert()" id="web">
+            Configuració Preferències
+          </button>
+        </td>
+        <td>
+          <button onclick="showAlert()" id="obrir">
+            Obrir la VideoConferència
+          </button>
+        </td>
+        <td>
+          <button onclick="showAlert()" id="ostadis">Estadístiques</button>
+        </td>
+        <td><button onclick="showAlert()" id="comandes">Comandes</button></td>
+        <td><button onclick="showAlert()" id="ofertes">Ofertes</button></td>
+        <td>
+          <button onclick="showAlert()" id="xarxes">Xarxes socials</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button id="bye">Tancar la VideoConferència</button></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <br />
+    <p>Clients connectats:<span id="UsuarisConnectats">0</span></p>
+    <div style="float: right;">
+      <strong>Torn</strong>
+      <p id="users"></p>
+    </div>
+    <div id="meet"></div>
+
+    <script src="https://meet.jit.si/external_api.js"></script>
+    <script>
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+      var myRoomName = url.searchParams.get("roomName");
+      var userName = url.searchParams.get("userName");
+
+      var domain = "meet.jit.si";
+      var options = {
+        roomName: myRoomName,
+        width: "90%",
+        height: "90%",
+        parentNode: document.querySelector("#meet"),
+        configOverwrite: {},
+        interfaceConfigOverwrite: {
+          SHOW_JITSI_WATERMARK: false,
+          SHOW_WATERMARK_FOR_GUESTS: false,
+          SHOW_CHROME_EXTENSION_BANNER: false,
+          DEFAULT_REMOTE_DISPLAY_NAME: "Usuari",
+          DEFAULT_LOCAL_DISPLAY_NAME: "jo",
+        },
+      };
+      var api = new JitsiMeetExternalAPI(domain, options);
+
+      function showAlert() {
+        alert(
+          "Aquesta funcionalitat no es troba desenvolupada en aquesta versió"
+        );
+      }
+    </script>
+    <script src="js/jitsiControls.js"></script>
+    <script src="js/functions.js"></script>
+  </body>
+</html>
