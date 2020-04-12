@@ -443,12 +443,16 @@ export class MapContainer extends Component {
               <p style={elInfoStyle}>
                 <b>Telèfon: </b>
                 <br></br>
-                {this.state.info.tel_fon}
+                <a style={noStyle} href={"tel:" + this.state.info.tel_fon}>
+                  {this.state.info.tel_fon}
+                </a>
               </p>
               <p style={elInfoStyle}>
                 <b>Correu: </b>
                 <br></br>
-                {this.state.info.correu}
+                <a style={noStyle} href={" mailto:" + this.state.info.correu}>
+                  {this.state.info.correu}
+                </a>
               </p>
               <p style={elInfoStyle}>
                 <b>Taulell virtual: </b>
