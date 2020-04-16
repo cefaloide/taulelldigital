@@ -483,7 +483,7 @@ export class MapContainer extends Component {
               <p style={elInfoStyle}>
                 <a
                   style={canviStyle}
-                  href=" mailto:info@taulelldigital.com?subject=He%20trobat%20dades%20incorrectes"
+                  href=" mailto:joanruedapau@gmail.com?subject=He%20trobat%20dades%20incorrectes"
                 >
                   Suggerir un canvi
                 </a>
