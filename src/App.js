@@ -386,14 +386,14 @@ export class MapContainer extends Component {
                   </>
                 )}
               </div>
-              <div style={welcomeStyle}>
+              {/* <div style={welcomeStyle}>
                 Si ets un productor <br />
                 accedeix a la teva secció
                 <br />
                 <a style={noStyle} href="./productor/index.html">
                   <img src="./img/order.png" />
                 </a>
-              </div>
+              </div> */}
             </div>
           )}
           {!this.state.showWelcome && (
