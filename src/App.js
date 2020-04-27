@@ -36,6 +36,18 @@ const mapStyle = {
 const containerUserName = {
   position: "absolute",
   top: "10px",
+  right: "8rem",
+  background: "white",
+  padding: "5px",
+  zIndex: "998",
+  borderRadius: "5px",
+  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
+  cursor: "pointer",
+};
+
+const containerMenuBtn = {
+  position: "absolute",
+  top: "10px",
   right: "5rem",
   background: "white",
   padding: "5px",
@@ -127,6 +139,7 @@ export class MapContainer extends Component {
       selectedPlace: {},
       userName: null,
       showWelcome: true,
+      showMenu: false,
       warningName: false,
       welcomePage: 0,
     };
@@ -298,13 +311,22 @@ export class MapContainer extends Component {
     this.setState({ userName: null });
   };
 
+  showHideMenu = () => {
+    console.log("set showMenu to " + !this.state.showMenu);
+    this.setState({ showMenu: !this.state.showMenu });
+  };
+
   render() {
     if (this.state.isLoading) {
       return <div>LOADING...</div>;
     } else {
       return (
         <>
-          <SimpleTable productorsProxim={this.state.productorsProxim} />
+          <SimpleTable
+            productorsProxim={this.state.productorsProxim}
+            isVisible={this.state.showMenu}
+            hide={() => this.showHideMenu()}
+          />
           {this.state.showWelcome && (
             <div style={containerWelcomeStyle}>
               <div style={welcomeStyle}>
@@ -407,6 +429,9 @@ export class MapContainer extends Component {
               <b>{this.state.userName}</b>
             </div>
           )}
+          <div style={containerMenuBtn} onClick={() => this.showHideMenu()}>
+            <img style={imgStyle} src="./img/menu.png" />{" "}
+          </div>
           {this.state.info !== "" && (
             <div style={divInfoStyle}>
               {/* <img

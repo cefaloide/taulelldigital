@@ -14,61 +14,58 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 export default function SimpleTable(props) {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Adreca</TableCell>
-            <TableCell>Codipostal</TableCell>
-            <TableCell>Comarca</TableCell>
-            <TableCell>Correu</TableCell>
-            <TableCell>Denominaci</TableCell>
-            <TableCell>Lat</TableCell>
-            <TableCell>Lng</TableCell>
-            <TableCell>Municipi</TableCell>
-            <TableCell>Nomempresa</TableCell>
-            <TableCell>Num_acreditacio</TableCell>
-            <TableCell>Productes</TableCell>
-            <TableCell>Tel_fon</TableCell>
-            <TableCell>Venda_directa</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.productorsProxim.map((row) => (
-            <TableRow key={row.num_acreditacio}>
-              <TableCell>{row.adreca}</TableCell>
-              <TableCell>{row.codipostal}</TableCell>
-              <TableCell>{row.comarca}</TableCell>
-              <TableCell>{row.correu}</TableCell>
-              <TableCell>{row.denominaci}</TableCell>
-              <TableCell>{row.lat}</TableCell>
-              <TableCell>{row.lng}</TableCell>
-              <TableCell>{row.municipi}</TableCell>
-              <TableCell>{row.nomempresa}</TableCell>
-              <TableCell>{row.num_acreditacio}</TableCell>
-              <TableCell>{row.productes}</TableCell>
-              <TableCell>{row.tel_fon}</TableCell>
-              <TableCell>{row.venda_directa}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {props.isVisible && (
+        <>
+          <div onClick={() => props.hide()}>
+            <img src="./img/close.png" />{" "}
+          </div>
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Adreca</TableCell>
+                  <TableCell>Codipostal</TableCell>
+                  <TableCell>Comarca</TableCell>
+                  <TableCell>Correu</TableCell>
+                  <TableCell>Denominaci</TableCell>
+                  <TableCell>Lat</TableCell>
+                  <TableCell>Lng</TableCell>
+                  <TableCell>Municipi</TableCell>
+                  <TableCell>Nomempresa</TableCell>
+                  <TableCell>Num_acreditacio</TableCell>
+                  <TableCell>Productes</TableCell>
+                  <TableCell>Tel_fon</TableCell>
+                  <TableCell>Venda_directa</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {props.productorsProxim.map((row) => (
+                  <TableRow key={row.num_acreditacio}>
+                    <TableCell>{row.adreca}</TableCell>
+                    <TableCell>{row.codipostal}</TableCell>
+                    <TableCell>{row.comarca}</TableCell>
+                    <TableCell>{row.correu}</TableCell>
+                    <TableCell>{row.denominaci}</TableCell>
+                    <TableCell>{row.lat}</TableCell>
+                    <TableCell>{row.lng}</TableCell>
+                    <TableCell>{row.municipi}</TableCell>
+                    <TableCell>{row.nomempresa}</TableCell>
+                    <TableCell>{row.num_acreditacio}</TableCell>
+                    <TableCell>{row.productes}</TableCell>
+                    <TableCell>{row.tel_fon}</TableCell>
+                    <TableCell>{row.venda_directa}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      )}
+    </>
   );
 }
