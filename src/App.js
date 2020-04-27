@@ -4,6 +4,7 @@ import { llicenciesComercialsService } from "./services/LlicenciesComercialsServ
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
+import SimpleTable from "./components/simpleTable";
 
 const welcomeTitle = {
   borderBottom: "1px solid darkgrey",
@@ -303,6 +304,7 @@ export class MapContainer extends Component {
     } else {
       return (
         <>
+          <SimpleTable productorsProxim={this.state.productorsProxim} />
           {this.state.showWelcome && (
             <div style={containerWelcomeStyle}>
               <div style={welcomeStyle}>
