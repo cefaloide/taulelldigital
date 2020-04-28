@@ -9,6 +9,12 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 const useStyles = makeStyles({
   root: {
     // width: 500,
+    width: "100%",
+    position: "absolute",
+    bottom: "0",
+  },
+  btns: {
+    background: "white",
   },
 });
 
@@ -29,16 +35,19 @@ export default function SimpleBottomNavigation(props) {
         onClick={() => props.callShowHideMap("show")}
         label="Mapa"
         icon={<MapIcon />}
+        className={classes.btns}
       />
       <BottomNavigationAction
         onClick={() => props.callShowHideList("show")}
         label="Llista"
         icon={<ListIcon />}
+        className={classes.btns}
       />
       <BottomNavigationAction
         onClick={() => props.callShowWelcome()}
         label={props.userName}
         icon={<AccountCircleIcon />}
+        className={classes.btns}
       />
     </BottomNavigation>
   );

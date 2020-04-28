@@ -29,7 +29,13 @@ const veureDetallStyle = {
   textAlign: "right",
   cursor: "pointer",
 };
-const mapStyle = {
+const testStyle = {
+  position: "absolute",
+  width: "100%",
+  height: "90%",
+};
+const containerStyle = {
+  position: "relative",
   width: "100%",
   height: "100%",
 };
@@ -574,11 +580,11 @@ export class MapContainer extends Component {
             </div>
           )}
           {this.state.showMap && (
-            <div>
+            <div style={testStyle}>
               <Map
                 google={this.props.google}
                 zoom={15}
-                style={mapStyle}
+                containerStyle={containerStyle}
                 initialCenter={{
                   lat: 41.3851,
                   lng: 2.1734,
