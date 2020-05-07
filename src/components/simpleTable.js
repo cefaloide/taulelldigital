@@ -91,7 +91,7 @@ const rows = [
   createData("69Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function DenseTable() {
+export default function DenseTable(props) {
   const classes = useStyles();
 
   return (
@@ -99,23 +99,37 @@ export default function DenseTable() {
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Nom empresa</TableCell>
+            <TableCell>Denominació</TableCell>
+            <TableCell>Municipi</TableCell>
+            <TableCell>Adreça</TableCell>
+            <TableCell>Codi postal</TableCell>
+            <TableCell>Comarca</TableCell>
+            <TableCell>Correu</TableCell>
+            <TableCell>Teléfon</TableCell>
+            <TableCell>Productes</TableCell>
+            {/* <TableCell>Venda_directa</TableCell> */}
+            <TableCell>Num acreditació</TableCell>
+            <TableCell>Lat</TableCell>
+            <TableCell>Lng</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+          {props.productorsProxim.map((row) => (
+            <TableRow key={row.num_acreditacio}>
+              <TableCell>{row.nomempresa}</TableCell>
+              <TableCell>{row.denominaci}</TableCell>
+              <TableCell>{row.municipi}</TableCell>
+              <TableCell>{row.adreca}</TableCell>
+              <TableCell>{row.codipostal}</TableCell>
+              <TableCell>{row.comarca}</TableCell>
+              <TableCell>{row.correu}</TableCell>
+              <TableCell>{row.tel_fon}</TableCell>
+              <TableCell>{row.productes}</TableCell>
+              {/* <TableCell>{row.venda_directa}</TableCell> */}
+              <TableCell>{row.num_acreditacio}</TableCell>
+              <TableCell>{row.lat}</TableCell>
+              <TableCell>{row.lng}</TableCell>
             </TableRow>
           ))}
         </TableBody>
