@@ -4,6 +4,8 @@ import { llicenciesComercialsService } from "./services/LlicenciesComercialsServ
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
+import SimpleTable from "./components/simpleTable";
+import BottomNavigation from "./components/bottomNavigation";
 
 const welcomeTitle = {
   borderBottom: "1px solid darkgrey",
@@ -27,12 +29,30 @@ const veureDetallStyle = {
   textAlign: "right",
   cursor: "pointer",
 };
-const mapStyle = {
+const testStyle = {
+  position: "absolute",
+  width: "100%",
+  height: "90%",
+};
+const containerStyle = {
+  position: "relative",
   width: "100%",
   height: "100%",
 };
 
 const containerUserName = {
+  position: "absolute",
+  top: "10px",
+  right: "8rem",
+  background: "white",
+  padding: "5px",
+  zIndex: "998",
+  borderRadius: "5px",
+  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
+  cursor: "pointer",
+};
+
+const containerMenuBtn = {
   position: "absolute",
   top: "10px",
   right: "5rem",
@@ -90,6 +110,10 @@ const noStyle = {
 const centerStyle = {
   textAlign: "center",
 };
+const tableWrapperStyle = {
+  height: "90vh",
+  overflow: "auto",
+};
 
 const closeIconStyle = {
   cursor: "pointer",
@@ -126,6 +150,8 @@ export class MapContainer extends Component {
       selectedPlace: {},
       userName: null,
       showWelcome: true,
+      showList: false,
+      showMap: true,
       warningName: false,
       welcomePage: 0,
     };
@@ -297,12 +323,63 @@ export class MapContainer extends Component {
     this.setState({ userName: null });
   };
 
+  showHideList = (option) => {
+    if (option === "show") {
+      console.log("set showList to true");
+      this.setState({
+        showList: true,
+        showMap: false,
+      });
+    } else if (option === "hide") {
+      console.log("set showList to false");
+      this.setState({
+        showList: false,
+        showMap: true,
+      });
+    } else {
+      console.log("set showList to " + !this.state.showList);
+      this.setState({
+        showList: !this.state.showList,
+        showMap: !this.state.showMap,
+      });
+    }
+  };
+  showHideMap = (option) => {
+    if (option === "show") {
+      console.log("set showMap to true");
+      this.setState({
+        showList: false,
+        showMap: true,
+      });
+    } else if (option === "hide") {
+      console.log("set showMap to false");
+      this.setState({
+        showList: true,
+        showMap: false,
+      });
+    } else {
+      console.log("set showMap to " + !this.state.showMap);
+      this.setState({
+        showList: !this.state.showList,
+        showMap: !this.state.showMap,
+      });
+    }
+  };
+
   render() {
     if (this.state.isLoading) {
       return <div>LOADING...</div>;
     } else {
       return (
         <>
+          {this.state.showList && (
+            <div style={tableWrapperStyle}>
+              <SimpleTable
+                productorsProxim={this.state.productorsProxim}
+                callShowHideList={() => this.showHideList()}
+              />
+            </div>
+          )}
           {this.state.showWelcome && (
             <div style={containerWelcomeStyle}>
               <div style={welcomeStyle}>
@@ -396,7 +473,7 @@ export class MapContainer extends Component {
               </div> */}
             </div>
           )}
-          {!this.state.showWelcome && (
+          {/* {!this.state.showWelcome && (
             <div
               style={containerUserName}
               onClick={() => this.setState({ showWelcome: true })}
@@ -404,7 +481,10 @@ export class MapContainer extends Component {
               <img style={imgStyle} src="./img/user.png" />{" "}
               <b>{this.state.userName}</b>
             </div>
-          )}
+          )} */}
+          {/* <div style={containerMenuBtn} onClick={() => this.showHideList()}>
+            <img style={imgStyle} src="./img/menu.png" />{" "}
+          </div> */}
           {this.state.info !== "" && (
             <div style={divInfoStyle}>
               {/* <img
@@ -505,67 +585,62 @@ export class MapContainer extends Component {
               ></iframe> */}
             </div>
           )}
-          <div>
-            <Map
-              google={this.props.google}
-              zoom={15}
-              style={mapStyle}
-              initialCenter={{
-                lat: 41.3851,
-                lng: 2.1734,
-              }}
-              onClick={this.onMapClicked}
-            >
-              {/* {this.displayMarkers()} */}
-              {/* {this.displayllicencies()} */}
-              {this.displayProductors()}
-              <InfoWindowEx
-                marker={this.state.activeMarker}
-                visible={this.state.showingInfoWindow}
+          {this.state.showMap && (
+            <div style={testStyle}>
+              <Map
+                google={this.props.google}
+                zoom={15}
+                containerStyle={containerStyle}
+                initialCenter={{
+                  lat: 41.3851,
+                  lng: 2.1734,
+                }}
+                onClick={this.onMapClicked}
               >
-                <div>
-                  <h3>
-                    {this.state.selectedPlace.title}{" "}
-                    {/* <img style={imgStyle} src="./img/openboard.png" /> */}
-                  </h3>
-                  <p style={centerStyle}>
-                    {this.state.selectedPlace.info && (
-                      <a
-                        style={noStyle}
-                        href={
-                          "./TD/t.html?roomName=" +
-                          this.getRoomName(
-                            this.state.selectedPlace.info.num_acreditacio
-                          ) +
-                          "&userName=" +
-                          this.state.userName
-                        }
-                        target="_blank"
-                      >
-                        <img src="./img/phoneGirlx64.png" />
-                      </a>
-                    )}
-                  </p>
-                  {/* <button
-                    type="button"
-                    onClick={() =>
-                      this.showMarkerInfo(this.state.selectedPlace.info)
-                    }
-                  >
-                    Veure detalls
-                  </button> */}
-                  <div
-                    style={veureDetallStyle}
-                    onClick={() =>
-                      this.showMarkerInfo(this.state.selectedPlace.info)
-                    }
-                  >
-                    Veure detalls
+                {this.displayProductors()}
+                <InfoWindowEx
+                  marker={this.state.activeMarker}
+                  visible={this.state.showingInfoWindow}
+                >
+                  <div>
+                    <h3>{this.state.selectedPlace.title} </h3>
+                    <p style={centerStyle}>
+                      {this.state.selectedPlace.info && (
+                        <a
+                          style={noStyle}
+                          href={
+                            "./TD/t.html?roomName=" +
+                            this.getRoomName(
+                              this.state.selectedPlace.info.num_acreditacio
+                            ) +
+                            "&userName=" +
+                            this.state.userName
+                          }
+                          target="_blank"
+                        >
+                          <img src="./img/phoneGirlx64.png" />
+                        </a>
+                      )}
+                    </p>
+                    <div
+                      style={veureDetallStyle}
+                      onClick={() =>
+                        this.showMarkerInfo(this.state.selectedPlace.info)
+                      }
+                    >
+                      Veure detalls
+                    </div>
                   </div>
-                </div>
-              </InfoWindowEx>
-            </Map>
-          </div>
+                </InfoWindowEx>
+              </Map>
+            </div>
+          )}
+          <BottomNavigation
+            callShowHideList={(e) => this.showHideList(e)}
+            callShowHideMap={(e) => this.showHideMap(e)}
+            callShowWelcome={() => this.setState({ showWelcome: true })}
+            userName={this.state.userName}
+          />
         </>
       );
     }
