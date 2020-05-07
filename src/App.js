@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { productorsProximService } from "./services/ProductorsProximService";
 import { llicenciesComercialsService } from "./services/LlicenciesComercialsService";
-import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
 import SimpleTable from "./components/simpleTable";
@@ -38,30 +38,6 @@ const containerStyle = {
   position: "relative",
   width: "100%",
   height: "100%",
-};
-
-const containerUserName = {
-  position: "absolute",
-  top: "10px",
-  right: "8rem",
-  background: "white",
-  padding: "5px",
-  zIndex: "998",
-  borderRadius: "5px",
-  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
-  cursor: "pointer",
-};
-
-const containerMenuBtn = {
-  position: "absolute",
-  top: "10px",
-  right: "5rem",
-  background: "white",
-  padding: "5px",
-  zIndex: "998",
-  borderRadius: "5px",
-  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
-  cursor: "pointer",
 };
 
 const divInfoStyle = {
@@ -113,12 +89,6 @@ const centerStyle = {
 const tableWrapperStyle = {
   height: "90vh",
   overflow: "auto",
-};
-
-const closeIconStyle = {
-  cursor: "pointer",
-  float: "right",
-  width: "32px",
 };
 const imgStyle = {
   verticalAlign: "middle",
@@ -290,7 +260,7 @@ export class MapContainer extends Component {
   setUserName = () => {
     console.log("setUserName");
     const name = this.state.userInputName;
-    if (name === "" || name == undefined) {
+    if (name === "" || name === undefined) {
       this.setState({ warningName: true });
     } else {
       localStorage.setItem("userName", name);
@@ -374,7 +344,7 @@ export class MapContainer extends Component {
                 {!this.state.userName && (
                   <>
                     <p>
-                      <img src="./img/girl150x150.png" />
+                      <img alt="girl" src="./img/girl150x150.png" />
                     </p>
                     <p>És la primera vegada que entres?</p>
                     <p>BENVINGUT/DA!</p>
@@ -386,6 +356,7 @@ export class MapContainer extends Component {
                         type="text"
                       ></input>{" "}
                       <img
+                        alt="next"
                         onClick={() => this.setUserName()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
@@ -399,25 +370,38 @@ export class MapContainer extends Component {
                   </>
                 )}
 
-                {this.state.welcomePage == 1 && (
+                {this.state.welcomePage === 1 && (
                   <div>
                     <h2 style={welcomeTitle}>Segueix els següents passos:</h2>
                     <p>
                       <b>1-</b> Volta pel mapa fins trobar el teu comerç de
                       proximitat.
-                      <img style={imgStyle} src="./img/logo_x64.png" />
+                      <img
+                        alt="logo"
+                        style={imgStyle}
+                        src="./img/logo_x64.png"
+                      />
                     </p>
                     <p>
                       <b>2-</b> Clica-hi a sobre per fer una videoconferència o
                       veure més detalls{" "}
-                      <img style={imgStyle} src="./img/phoneGirlx64.png" />
+                      <img
+                        alt="girl"
+                        style={imgStyle}
+                        src="./img/phoneGirlx64.png"
+                      />
                     </p>
                     <p>
                       <b>3-</b> Ja hi pots contactar de manera directa!{" "}
-                      <img style={imgStyle} src="./img/girlHeart_x64.png" />
+                      <img
+                        alt="girl"
+                        style={imgStyle}
+                        src="./img/girlHeart_x64.png"
+                      />
                     </p>
                     <p>
                       <img
+                        alt="next"
                         onClick={() => this.hideWelcome()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
@@ -426,10 +410,10 @@ export class MapContainer extends Component {
                   </div>
                 )}
 
-                {this.state.userName && this.state.welcomePage == 0 && (
+                {this.state.userName && this.state.welcomePage === 0 && (
                   <>
                     <p>
-                      <img src="./img/girlSmile150x150.png" />
+                      <img alt="girlSmile" src="./img/girlSmile150x150.png" />
                     </p>
                     <p>
                       Hola <b>{this.state.userName}</b>
@@ -437,6 +421,7 @@ export class MapContainer extends Component {
                     <p>
                       Benvolgut/da{" "}
                       <img
+                        alt="next"
                         onClick={() => this.hideWelcome()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
@@ -542,9 +527,14 @@ export class MapContainer extends Component {
                     this.state.userName
                   }
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Videoconferència{" "}
-                  <img style={imgStyle} src="./img/phoneGirlx64.png" />
+                  <img
+                    alt="girl"
+                    style={imgStyle}
+                    src="./img/phoneGirlx64.png"
+                  />
                 </a>
               </p>
 
@@ -605,8 +595,9 @@ export class MapContainer extends Component {
                             this.state.userName
                           }
                           target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          <img src="./img/phoneGirlx64.png" />
+                          <img alt="girl" src="./img/phoneGirlx64.png" />
                         </a>
                       )}
                     </p>
