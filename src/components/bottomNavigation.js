@@ -5,6 +5,7 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import ListIcon from "@material-ui/icons/List";
 import MapIcon from "@material-ui/icons/Map";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 
 const useStyles = makeStyles({
   root: {
@@ -48,6 +49,12 @@ export default function SimpleBottomNavigation(props) {
         label={props.userName}
         icon={<AccountCircleIcon />}
         className={classes.btns}
+      />
+      <BottomNavigationAction
+        label="contacta"
+        icon={<ContactSupportIcon />}
+        className={classes.btns}
+        href=" mailto:joanruedapau@gmail.com?subject=He%20trobat%20dades%20incorrectes"
       />
     </BottomNavigation>
   );
