@@ -43,38 +43,40 @@ export default function SimpleBottomNavigation(props) {
   };
 
   return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      showLabels
-      className={classes.root}
-    >
-      <BottomNavigationAction
-        onClick={() => props.callShowHideMap("show")}
-        label="Mapa"
-        icon={<MapIcon />}
-        className={classes.btns}
-      />
-      <BottomNavigationAction
-        onClick={() => props.callShowHideList("show")}
-        label="Llista"
-        icon={<ListIcon />}
-        className={classes.btns}
-      />
-      <BottomNavigationAction
-        onClick={() => props.callShowWelcome()}
-        label={props.userName}
-        icon={<AccountCircleIcon />}
-        className={classes.btns}
-      />
-      <BottomNavigationAction
-        onClick={handleClickOpen}
-        label="contacta"
-        icon={<ContactSupportIcon />}
-        className={classes.btns}
-      />
+    <>
+      <BottomNavigation
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        showLabels
+        className={classes.root}
+      >
+        <BottomNavigationAction
+          onClick={() => props.callShowHideMap("show")}
+          label="Mapa"
+          icon={<MapIcon />}
+          className={classes.btns}
+        />
+        <BottomNavigationAction
+          onClick={() => props.callShowHideList("show")}
+          label="Llista"
+          icon={<ListIcon />}
+          className={classes.btns}
+        />
+        <BottomNavigationAction
+          onClick={() => props.callShowWelcome()}
+          label={props.userName}
+          icon={<AccountCircleIcon />}
+          className={classes.btns}
+        />
+        <BottomNavigationAction
+          onClick={handleClickOpen}
+          label="contacta"
+          icon={<ContactSupportIcon />}
+          className={classes.btns}
+        />
+      </BottomNavigation>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -92,6 +94,6 @@ export default function SimpleBottomNavigation(props) {
           </DialogContentText>
         </DialogContent>
       </Dialog>
-    </BottomNavigation>
+    </>
   );
 }

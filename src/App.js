@@ -165,13 +165,8 @@ export class MapContainer extends Component {
     this.loadAllProductorsProxim();
 
     var userName = localStorage.getItem("userName");
-    console.log("userName");
-    console.log(userName);
     if (userName) {
-      console.log("SI");
       this.setState({ userName });
-    } else {
-      console.log("NO");
     }
   }
 
@@ -229,15 +224,10 @@ export class MapContainer extends Component {
   };
 
   loadAllLlicenciesComercials = async () => {
-    console.log("loadAllLlicenciesComercials");
     const res = await llicenciesComercialsService.getAll();
-    // setProductorsProxim(res);
     this.setState({ llicenciesComercials: res });
-    console.log("res loadAllLlicenciesComercials");
-    console.log(res);
   };
   loadAllProductorsProxim = async () => {
-    console.log("loadAllProductors");
     const res = await productorsProximService.getAll();
     // añadir valores de lat y long
     // let productors = [];
@@ -263,8 +253,6 @@ export class MapContainer extends Component {
     //     }
     //   );
     // }
-    console.log("res loadAllProductors");
-    console.log(res);
     this.setState({ productorsProxim: res, isLoading: false });
   };
 
