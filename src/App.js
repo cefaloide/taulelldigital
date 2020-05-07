@@ -110,6 +110,11 @@ const noStyle = {
 const centerStyle = {
   textAlign: "center",
 };
+const tableWrapperStyle = {
+  height: "90vh",
+  background: "red",
+  overflow: "auto",
+};
 
 const closeIconStyle = {
   cursor: "pointer",
@@ -369,10 +374,12 @@ export class MapContainer extends Component {
       return (
         <>
           {this.state.showList && (
-            <SimpleTable
-              productorsProxim={this.state.productorsProxim}
-              callShowHideList={() => this.showHideList()}
-            />
+            <div style={tableWrapperStyle}>
+              <SimpleTable
+                productorsProxim={this.state.productorsProxim}
+                callShowHideList={() => this.showHideList()}
+              />
+            </div>
           )}
           {this.state.showWelcome && (
             <div style={containerWelcomeStyle}>
