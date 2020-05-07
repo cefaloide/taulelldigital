@@ -112,7 +112,6 @@ const centerStyle = {
 };
 const tableWrapperStyle = {
   height: "90vh",
-  background: "red",
   overflow: "auto",
 };
 
