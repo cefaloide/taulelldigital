@@ -258,7 +258,7 @@ export class MapContainer extends Component {
   };
 
   setUserName = () => {
-    console.log("setUserName");
+    // console.log("setUserName");
     const name = this.state.userInputName;
     if (name === "" || name === undefined) {
       this.setState({ warningName: true });
@@ -283,19 +283,19 @@ export class MapContainer extends Component {
 
   showHideList = (option) => {
     if (option === "show") {
-      console.log("set showList to true");
+      // console.log("set showList to true");
       this.setState({
         showList: true,
         showMap: false,
       });
     } else if (option === "hide") {
-      console.log("set showList to false");
+      // console.log("set showList to false");
       this.setState({
         showList: false,
         showMap: true,
       });
     } else {
-      console.log("set showList to " + !this.state.showList);
+      // console.log("set showList to " + !this.state.showList);
       this.setState({
         showList: !this.state.showList,
         showMap: !this.state.showMap,
@@ -304,19 +304,19 @@ export class MapContainer extends Component {
   };
   showHideMap = (option) => {
     if (option === "show") {
-      console.log("set showMap to true");
+      // console.log("set showMap to true");
       this.setState({
         showList: false,
         showMap: true,
       });
     } else if (option === "hide") {
-      console.log("set showMap to false");
+      // console.log("set showMap to false");
       this.setState({
         showList: true,
         showMap: false,
       });
     } else {
-      console.log("set showMap to " + !this.state.showMap);
+      // console.log("set showMap to " + !this.state.showMap);
       this.setState({
         showList: !this.state.showList,
         showMap: !this.state.showMap,
