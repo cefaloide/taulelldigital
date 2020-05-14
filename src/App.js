@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { productorsProximService } from "./services/ProductorsProximService";
 import { llicenciesComercialsService } from "./services/LlicenciesComercialsService";
-import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
+import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
+import SimpleTable from "./components/simpleTable";
+import BottomNavigation from "./components/bottomNavigation";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Slide from "@material-ui/core/Slide";
 
 const welcomeTitle = {
   borderBottom: "1px solid darkgrey",
@@ -27,21 +33,15 @@ const veureDetallStyle = {
   textAlign: "right",
   cursor: "pointer",
 };
-const mapStyle = {
+const testStyle = {
+  position: "absolute",
+  width: "100%",
+  height: "90%",
+};
+const containerStyle = {
+  position: "relative",
   width: "100%",
   height: "100%",
-};
-
-const containerUserName = {
-  position: "absolute",
-  top: "10px",
-  right: "5rem",
-  background: "white",
-  padding: "5px",
-  zIndex: "998",
-  borderRadius: "5px",
-  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
-  cursor: "pointer",
 };
 
 const divInfoStyle = {
@@ -62,26 +62,6 @@ const divInfoStyle = {
 const elInfoStyle = {
   padding: "5px",
 };
-const containerWelcomeStyle = {
-  display: "flex",
-  flexDirection: "column",
-  position: "absolute",
-  zIndex: "999",
-  width: "100%",
-  height: "100%",
-  justifyContent: "center",
-  alignItems: "center",
-  background: "rgba(0, 0, 0, 0.5)",
-};
-const welcomeStyle = {
-  margin: "5px",
-  background: "white",
-  top: "15%",
-  padding: "15px",
-  borderRadius: "5px",
-  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
-  textAlign: "center",
-};
 
 const noStyle = {
   textDecoration: "none",
@@ -90,11 +70,9 @@ const noStyle = {
 const centerStyle = {
   textAlign: "center",
 };
-
-const closeIconStyle = {
-  cursor: "pointer",
-  float: "right",
-  width: "32px",
+const tableWrapperStyle = {
+  height: "90vh",
+  overflow: "auto",
 };
 const imgStyle = {
   verticalAlign: "middle",
@@ -103,6 +81,9 @@ const imgBtnStyle = {
   verticalAlign: "middle",
   cursor: "pointer",
 };
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -125,7 +106,9 @@ export class MapContainer extends Component {
       activeMarker: {},
       selectedPlace: {},
       userName: null,
-      showWelcome: true,
+      isWelcomeDialogOpen: true,
+      showList: false,
+      showMap: true,
       warningName: false,
       welcomePage: 0,
     };
@@ -139,13 +122,8 @@ export class MapContainer extends Component {
     this.loadAllProductorsProxim();
 
     var userName = localStorage.getItem("userName");
-    console.log("userName");
-    console.log(userName);
     if (userName) {
-      console.log("SI");
       this.setState({ userName });
-    } else {
-      console.log("NO");
     }
   }
 
@@ -203,15 +181,10 @@ export class MapContainer extends Component {
   };
 
   loadAllLlicenciesComercials = async () => {
-    console.log("loadAllLlicenciesComercials");
     const res = await llicenciesComercialsService.getAll();
-    // setProductorsProxim(res);
     this.setState({ llicenciesComercials: res });
-    console.log("res loadAllLlicenciesComercials");
-    console.log(res);
   };
   loadAllProductorsProxim = async () => {
-    console.log("loadAllProductors");
     const res = await productorsProximService.getAll();
     // añadir valores de lat y long
     // let productors = [];
@@ -237,8 +210,6 @@ export class MapContainer extends Component {
     //     }
     //   );
     // }
-    console.log("res loadAllProductors");
-    console.log(res);
     this.setState({ productorsProxim: res, isLoading: false });
   };
 
@@ -274,9 +245,9 @@ export class MapContainer extends Component {
   };
 
   setUserName = () => {
-    console.log("setUserName");
+    // console.log("setUserName");
     const name = this.state.userInputName;
-    if (name === "" || name == undefined) {
+    if (name === "" || name === undefined) {
       this.setState({ warningName: true });
     } else {
       localStorage.setItem("userName", name);
@@ -284,8 +255,12 @@ export class MapContainer extends Component {
     }
   };
 
-  hideWelcome = () => {
-    this.setState({ welcomePage: 0, showWelcome: false });
+  openWelcomeDialog = () => {
+    this.setState({ isWelcomeDialogOpen: true });
+  };
+
+  closeWelcomeDialog = () => {
+    this.setState({ isWelcomeDialogOpen: false, welcomePage: 0 });
   };
 
   updateInputName = (evt) => {
@@ -297,19 +272,81 @@ export class MapContainer extends Component {
     this.setState({ userName: null });
   };
 
+  showHideList = (option) => {
+    if (option === "show") {
+      // console.log("set showList to true");
+      this.setState({
+        showList: true,
+        showMap: false,
+      });
+    } else if (option === "hide") {
+      // console.log("set showList to false");
+      this.setState({
+        showList: false,
+        showMap: true,
+      });
+    } else {
+      // console.log("set showList to " + !this.state.showList);
+      this.setState({
+        showList: !this.state.showList,
+        showMap: !this.state.showMap,
+      });
+    }
+  };
+  showHideMap = (option) => {
+    if (option === "show") {
+      // console.log("set showMap to true");
+      this.setState({
+        showList: false,
+        showMap: true,
+      });
+    } else if (option === "hide") {
+      // console.log("set showMap to false");
+      this.setState({
+        showList: true,
+        showMap: false,
+      });
+    } else {
+      // console.log("set showMap to " + !this.state.showMap);
+      this.setState({
+        showList: !this.state.showList,
+        showMap: !this.state.showMap,
+      });
+    }
+  };
+
   render() {
     if (this.state.isLoading) {
       return <div>LOADING...</div>;
     } else {
       return (
         <>
-          {this.state.showWelcome && (
-            <div style={containerWelcomeStyle}>
-              <div style={welcomeStyle}>
+          {this.state.showList && (
+            <div style={tableWrapperStyle}>
+              <SimpleTable
+                productorsProxim={this.state.productorsProxim}
+                callShowHideList={() => this.showHideList()}
+              />
+            </div>
+          )}
+
+          <Dialog
+            open={this.state.isWelcomeDialogOpen}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={() => this.closeWelcomeDialog()}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogContent>
+              <DialogContentText
+                style={centerStyle}
+                id="alert-dialog-slide-description"
+              >
                 {!this.state.userName && (
                   <>
                     <p>
-                      <img src="./img/girl150x150.png" />
+                      <img alt="girl" src="./img/girl150x150.png" />
                     </p>
                     <p>És la primera vegada que entres?</p>
                     <p>BENVINGUT/DA!</p>
@@ -321,6 +358,7 @@ export class MapContainer extends Component {
                         type="text"
                       ></input>{" "}
                       <img
+                        alt="next"
                         onClick={() => this.setUserName()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
@@ -334,26 +372,39 @@ export class MapContainer extends Component {
                   </>
                 )}
 
-                {this.state.welcomePage == 1 && (
+                {this.state.welcomePage === 1 && (
                   <div>
                     <h2 style={welcomeTitle}>Segueix els següents passos:</h2>
                     <p>
                       <b>1-</b> Volta pel mapa fins trobar el teu comerç de
                       proximitat.
-                      <img style={imgStyle} src="./img/logo_x64.png" />
+                      <img
+                        alt="logo"
+                        style={imgStyle}
+                        src="./img/logo_x64.png"
+                      />
                     </p>
                     <p>
                       <b>2-</b> Clica-hi a sobre per fer una videoconferència o
                       veure més detalls{" "}
-                      <img style={imgStyle} src="./img/phoneGirlx64.png" />
+                      <img
+                        alt="girl"
+                        style={imgStyle}
+                        src="./img/phoneGirlx64.png"
+                      />
                     </p>
                     <p>
                       <b>3-</b> Ja hi pots contactar de manera directa!{" "}
-                      <img style={imgStyle} src="./img/girlHeart_x64.png" />
+                      <img
+                        alt="girl"
+                        style={imgStyle}
+                        src="./img/girlHeart_x64.png"
+                      />
                     </p>
                     <p>
                       <img
-                        onClick={() => this.hideWelcome()}
+                        alt="next"
+                        onClick={() => this.closeWelcomeDialog()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
                       />
@@ -361,10 +412,10 @@ export class MapContainer extends Component {
                   </div>
                 )}
 
-                {this.state.userName && this.state.welcomePage == 0 && (
+                {this.state.userName && this.state.welcomePage === 0 && (
                   <>
                     <p>
-                      <img src="./img/girlSmile150x150.png" />
+                      <img alt="girlSmile" src="./img/girlSmile150x150.png" />
                     </p>
                     <p>
                       Hola <b>{this.state.userName}</b>
@@ -372,7 +423,8 @@ export class MapContainer extends Component {
                     <p>
                       Benvolgut/da{" "}
                       <img
-                        onClick={() => this.hideWelcome()}
+                        alt="next"
+                        onClick={() => this.closeWelcomeDialog()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
                       />
@@ -385,26 +437,22 @@ export class MapContainer extends Component {
                     </p>
                   </>
                 )}
-              </div>
-              {/* <div style={welcomeStyle}>
-                Si ets un productor <br />
-                accedeix a la teva secció
-                <br />
-                <a style={noStyle} href="./productor/index.html">
-                  <img src="./img/order.png" />
-                </a>
-              </div> */}
-            </div>
-          )}
-          {!this.state.showWelcome && (
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
+
+          {/* {!this.state.isWelcomeDialogOpen && (
             <div
               style={containerUserName}
-              onClick={() => this.setState({ showWelcome: true })}
+              onClick={() => this.setState({ isWelcomeDialogOpen: true })}
             >
               <img style={imgStyle} src="./img/user.png" />{" "}
               <b>{this.state.userName}</b>
             </div>
-          )}
+          )} */}
+          {/* <div style={containerMenuBtn} onClick={() => this.showHideList()}>
+            <img style={imgStyle} src="./img/menu.png" />{" "}
+          </div> */}
           {this.state.info !== "" && (
             <div style={divInfoStyle}>
               {/* <img
@@ -474,9 +522,14 @@ export class MapContainer extends Component {
                     this.state.userName
                   }
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Videoconferència{" "}
-                  <img style={imgStyle} src="./img/phoneGirlx64.png" />
+                  <img
+                    alt="girl"
+                    style={imgStyle}
+                    src="./img/phoneGirlx64.png"
+                  />
                 </a>
               </p>
 
@@ -505,67 +558,63 @@ export class MapContainer extends Component {
               ></iframe> */}
             </div>
           )}
-          <div>
-            <Map
-              google={this.props.google}
-              zoom={15}
-              style={mapStyle}
-              initialCenter={{
-                lat: 41.3851,
-                lng: 2.1734,
-              }}
-              onClick={this.onMapClicked}
-            >
-              {/* {this.displayMarkers()} */}
-              {/* {this.displayllicencies()} */}
-              {this.displayProductors()}
-              <InfoWindowEx
-                marker={this.state.activeMarker}
-                visible={this.state.showingInfoWindow}
+          {this.state.showMap && (
+            <div style={testStyle}>
+              <Map
+                google={this.props.google}
+                zoom={15}
+                containerStyle={containerStyle}
+                initialCenter={{
+                  lat: 41.3851,
+                  lng: 2.1734,
+                }}
+                onClick={this.onMapClicked}
               >
-                <div>
-                  <h3>
-                    {this.state.selectedPlace.title}{" "}
-                    {/* <img style={imgStyle} src="./img/openboard.png" /> */}
-                  </h3>
-                  <p style={centerStyle}>
-                    {this.state.selectedPlace.info && (
-                      <a
-                        style={noStyle}
-                        href={
-                          "./TD/t.html?roomName=" +
-                          this.getRoomName(
-                            this.state.selectedPlace.info.num_acreditacio
-                          ) +
-                          "&userName=" +
-                          this.state.userName
-                        }
-                        target="_blank"
-                      >
-                        <img src="./img/phoneGirlx64.png" />
-                      </a>
-                    )}
-                  </p>
-                  {/* <button
-                    type="button"
-                    onClick={() =>
-                      this.showMarkerInfo(this.state.selectedPlace.info)
-                    }
-                  >
-                    Veure detalls
-                  </button> */}
-                  <div
-                    style={veureDetallStyle}
-                    onClick={() =>
-                      this.showMarkerInfo(this.state.selectedPlace.info)
-                    }
-                  >
-                    Veure detalls
+                {this.displayProductors()}
+                <InfoWindowEx
+                  marker={this.state.activeMarker}
+                  visible={this.state.showingInfoWindow}
+                >
+                  <div>
+                    <h3>{this.state.selectedPlace.title} </h3>
+                    <p style={centerStyle}>
+                      {this.state.selectedPlace.info && (
+                        <a
+                          style={noStyle}
+                          href={
+                            "./TD/t.html?roomName=" +
+                            this.getRoomName(
+                              this.state.selectedPlace.info.num_acreditacio
+                            ) +
+                            "&userName=" +
+                            this.state.userName
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img alt="girl" src="./img/phoneGirlx64.png" />
+                        </a>
+                      )}
+                    </p>
+                    <div
+                      style={veureDetallStyle}
+                      onClick={() =>
+                        this.showMarkerInfo(this.state.selectedPlace.info)
+                      }
+                    >
+                      Veure detalls
+                    </div>
                   </div>
-                </div>
-              </InfoWindowEx>
-            </Map>
-          </div>
+                </InfoWindowEx>
+              </Map>
+            </div>
+          )}
+          <BottomNavigation
+            callShowHideList={(e) => this.showHideList(e)}
+            callShowHideMap={(e) => this.showHideMap(e)}
+            callShowWelcome={() => this.openWelcomeDialog()}
+            userName={this.state.userName}
+          />
         </>
       );
     }
