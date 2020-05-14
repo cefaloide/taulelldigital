@@ -6,6 +6,10 @@ import Geocode from "react-geocode";
 import InfoWindowEx from "./components/InfoWindowEx";
 import SimpleTable from "./components/simpleTable";
 import BottomNavigation from "./components/bottomNavigation";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Slide from "@material-ui/core/Slide";
 
 const welcomeTitle = {
   borderBottom: "1px solid darkgrey",
@@ -58,26 +62,6 @@ const divInfoStyle = {
 const elInfoStyle = {
   padding: "5px",
 };
-const containerWelcomeStyle = {
-  display: "flex",
-  flexDirection: "column",
-  position: "absolute",
-  zIndex: "999",
-  width: "100%",
-  height: "100%",
-  justifyContent: "center",
-  alignItems: "center",
-  background: "rgba(0, 0, 0, 0.5)",
-};
-const welcomeStyle = {
-  margin: "5px",
-  background: "white",
-  top: "15%",
-  padding: "15px",
-  borderRadius: "5px",
-  boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.55)",
-  textAlign: "center",
-};
 
 const noStyle = {
   textDecoration: "none",
@@ -97,6 +81,9 @@ const imgBtnStyle = {
   verticalAlign: "middle",
   cursor: "pointer",
 };
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export class MapContainer extends Component {
   constructor(props) {
@@ -119,7 +106,7 @@ export class MapContainer extends Component {
       activeMarker: {},
       selectedPlace: {},
       userName: null,
-      showWelcome: true,
+      isWelcomeDialogOpen: true,
       showList: false,
       showMap: true,
       warningName: false,
@@ -268,8 +255,12 @@ export class MapContainer extends Component {
     }
   };
 
-  hideWelcome = () => {
-    this.setState({ welcomePage: 0, showWelcome: false });
+  openWelcomeDialog = () => {
+    this.setState({ isWelcomeDialogOpen: true });
+  };
+
+  closeWelcomeDialog = () => {
+    this.setState({ isWelcomeDialogOpen: false, welcomePage: 0 });
   };
 
   updateInputName = (evt) => {
@@ -338,9 +329,20 @@ export class MapContainer extends Component {
               />
             </div>
           )}
-          {this.state.showWelcome && (
-            <div style={containerWelcomeStyle}>
-              <div style={welcomeStyle}>
+
+          <Dialog
+            open={this.state.isWelcomeDialogOpen}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={() => this.closeWelcomeDialog()}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogContent>
+              <DialogContentText
+                style={centerStyle}
+                id="alert-dialog-slide-description"
+              >
                 {!this.state.userName && (
                   <>
                     <p>
@@ -402,7 +404,7 @@ export class MapContainer extends Component {
                     <p>
                       <img
                         alt="next"
-                        onClick={() => this.hideWelcome()}
+                        onClick={() => this.closeWelcomeDialog()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
                       />
@@ -422,7 +424,7 @@ export class MapContainer extends Component {
                       Benvolgut/da{" "}
                       <img
                         alt="next"
-                        onClick={() => this.hideWelcome()}
+                        onClick={() => this.closeWelcomeDialog()}
                         style={imgBtnStyle}
                         src="./img/forward.png"
                       />
@@ -435,21 +437,14 @@ export class MapContainer extends Component {
                     </p>
                   </>
                 )}
-              </div>
-              {/* <div style={welcomeStyle}>
-                Si ets un productor <br />
-                accedeix a la teva secció
-                <br />
-                <a style={noStyle} href="./productor/index.html">
-                  <img src="./img/order.png" />
-                </a>
-              </div> */}
-            </div>
-          )}
-          {/* {!this.state.showWelcome && (
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
+
+          {/* {!this.state.isWelcomeDialogOpen && (
             <div
               style={containerUserName}
-              onClick={() => this.setState({ showWelcome: true })}
+              onClick={() => this.setState({ isWelcomeDialogOpen: true })}
             >
               <img style={imgStyle} src="./img/user.png" />{" "}
               <b>{this.state.userName}</b>
@@ -617,7 +612,7 @@ export class MapContainer extends Component {
           <BottomNavigation
             callShowHideList={(e) => this.showHideList(e)}
             callShowHideMap={(e) => this.showHideMap(e)}
-            callShowWelcome={() => this.setState({ showWelcome: true })}
+            callShowWelcome={() => this.openWelcomeDialog()}
             userName={this.state.userName}
           />
         </>
